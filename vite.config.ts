@@ -33,17 +33,16 @@ import tailwindcss from "@tailwindcss/vite";
 const BASE_PATH = "/sales-os";
 
 export default defineConfig({
-    base: `${BASE_PATH}/`,
-    plugins: [
-          tsConfigPaths(),
-          tanstackStart({
-                  server: {
-                            entry: "src/server.ts",
-                  },
-          }),
-          react(),
-          netlify(),
-          tailwindcss(),
-        ],
+  base: `${BASE_PATH}/`,
+  plugins: [
+    tsConfigPaths(),
+    tanstackStart({
+      server: {
+        entry: "src/server.ts",
+      },
+    }),
+    react(),
+    netlify(),
+    tailwindcss(),
+  ],
 });
-test

@@ -1,112 +1,111 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-
+  
 @custom-variant dark (&:is(.dark *));
-
+  
 @theme inline {
-    --radius-sm: calc(var(--radius) - 4px);
-    --radius-md: calc(var(--radius) - 2px);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) + 4px);
-    --radius-2xl: calc(var(--radius) + 8px);
-    --radius-3xl: calc(var(--radius) + 12px);
-    --radius-4xl: calc(var(--radius) + 16px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
   
-    --font-heading: "Poppins", sans-serif;
-    --font-sans: "Poppins", sans-serif;
-    --font-serif: "Libre Caslon Text", serif;
+  --font-heading: "Poppins", sans-serif;
+  --font-sans: "Poppins", sans-serif;
+  --font-serif: "Libre Caslon Text", serif;
   
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --color-card: var(--card);
-    --color-card-foreground: var(--card-foreground);
-    --color-popover: var(--popover);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-primary: var(--primary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-secondary: var(--secondary);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-muted: var(--muted);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-accent: var(--accent);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-destructive: var(--destructive);
-    --color-destructive-foreground: var(--destructive-foreground);
-    --color-border: var(--border);
-    --color-input: var(--input);
-    --color-ring: var(--ring);
-    --color-brand-orange: var(--brand-orange);
-    --color-brand-dot: var(--brand-dot);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-dot: var(--brand-dot);
 }
-
+  
 :root {
-    --radius: 0.75rem;
-    /* S.OS² brand palette — exact brand hex codes, solid colours only */
-    /* #000000 */
-    --background: oklch(0 0 0);
-    --foreground: oklch(0.97 0.005 260);
+  --radius: 0.75rem;
+  /* S.OS² brand palette — exact brand hex codes, solid colours only */
+  /* #000000 */
+  --background: oklch(0 0 0);
+  --foreground: oklch(0.97 0.005 260);
   
-    --card: oklch(0.13 0.018 260);
-    --card-foreground: oklch(0.97 0.005 260);
+  --card: oklch(0.13 0.018 260);
+  --card-foreground: oklch(0.97 0.005 260);
   
-    --popover: oklch(0.12 0.018 260);
-    --popover-foreground: oklch(0.97 0.005 260);
+  --popover: oklch(0.12 0.018 260);
+  --popover-foreground: oklch(0.97 0.005 260);
   
-    /* #e8533f — brand primary orange-red */
-    --primary: oklch(0.6405 0.1888 34.04);
-    --primary-foreground: oklch(1 0 0);
+  /* #e8533f — brand primary orange-red */
+  --primary: oklch(0.6405 0.1888 34.04);
+  --primary-foreground: oklch(1 0 0);
   
-    /* #9e9e9e — brand grey */
-    --secondary: oklch(0.6993 0.0001 22.11);
-    --secondary-foreground: oklch(0.15 0.005 260);
+  /* #9e9e9e — brand grey */
+  --secondary: oklch(0.6993 0.0001 22.11);
+  --secondary-foreground: oklch(0.15 0.005 260);
   
-    --muted: oklch(0.16 0.02 260);
-    --muted-foreground: oklch(0.6993 0.0001 22.11);
+  --muted: oklch(0.16 0.02 260);
+  --muted-foreground: oklch(0.6993 0.0001 22.11);
   
-    /* #142d23 — brand deep green */
-    --accent: oklch(0.2718 0.0413 164.37);
-    --accent-foreground: oklch(0.97 0.005 260);
+  /* #142d23 — brand deep green */
+  --accent: oklch(0.2718 0.0413 164.37);
+  --accent-foreground: oklch(0.97 0.005 260);
   
-    --destructive: oklch(0.55 0.22 25);
-    --destructive-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
   
-    --border: oklch(0.6993 0.0001 22.11 / 30%);
-    --input: oklch(0.2 0.02 260);
-    --ring: oklch(0.6405 0.1888 34.04);
+  --border: oklch(0.6993 0.0001 22.11 / 30%);
+  --input: oklch(0.2 0.02 260);
+  --ring: oklch(0.6405 0.1888 34.04);
   
-    --brand-orange: oklch(0.6405 0.1888 34.04);
-    --brand-dot: oklch(0.6405 0.1888 34.04);
+  --brand-orange: oklch(0.6405 0.1888 34.04);
+  --brand-dot: oklch(0.6405 0.1888 34.04);
 }
-
+  
 @layer base {
-    * {
-          border-color: var(--color-border);
-    }
+  * {
+    border-color: var(--color-border);
+  }
   
-    body {
-          background-color: var(--color-background);
-          color: var(--color-foreground);
-          font-family: var(--font-sans);
-          overflow-x: hidden;
-    }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
   
-    h1,
-    h2,
-    h3,
-    h4,
-    .font-heading {
-          font-family: var(--font-heading);
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-heading {
+    font-family: var(--font-heading);
+  }
 }
-
+  
 @utility glass-card {
-    background: color-mix(in oklab, var(--card) 80%, transparent);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 80%, transparent);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
 }
-
+  
 @utility glow-orange {
-    box-shadow: 0 0 35px -5px oklch(0.6405 0.1888 34.04 / 35%);
+  box-shadow: 0 0 35px -5px oklch(0.6405 0.1888 34.04 / 35%);
 }
-test

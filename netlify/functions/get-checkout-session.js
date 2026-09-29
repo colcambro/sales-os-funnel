@@ -19,38 +19,37 @@
 import Stripe from "stripe";
 
 export const handler = async (event) => {
-    if (event.httpMethod !== "GET") {
-          return { statusCode: 405, body: "Method Not Allowed" };
-    }
-  
-    const sessionId = event.queryStringParameters && event.queryStringParameters.session_id;
-    if (!sessionId) {
-          return { statusCode: 400, body: JSON.stringify({ error: "Missing session_id" }) };
-    }
-  
-    const secretKey = process.env.STRIPE_SECRET_KEY;
-    if (!secretKey) {
-          console.error("STRIPE_SECRET_KEY is not set");
-          return { statusCode: 500, body: JSON.stringify({ error: "Stripe is not configured yet." }) };
-    }
-  
-    const stripe = new Stripe(secretKey, { apiVersion: "2024-06-20" });
-  
-    try {
-          const session = await stripe.checkout.sessions.retrieve(sessionId);
-      
-          return {
-                  statusCode: 200,
-                  body: JSON.stringify({
-                            status: session.payment_status, // "paid" | "unpaid" | "no_payment_required"
-                            email: session.customer_details ? session.customer_details.email : null,
-                            amountTotal: session.amount_total, // smallest currency unit (cents for USD)
-                            currency: session.currency,
-                  }),
-          };
-    } catch (err) {
-          console.error("Stripe session lookup failed:", err);
-          return { statusCode: 404, body: JSON.stringify({ error: "Session not found" }) };
-    }
+  if (event.httpMethod !== "GET") {
+    return { statusCode: 405, body: "Method Not Allowed" };
+  }
+
+  const sessionId = event.queryStringParameters && event.queryStringParameters.session_id;
+  if (!sessionId) {
+    return { statusCode: 400, body: JSON.stringify({ error: "Missing session_id" }) };
+  }
+
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) {
+    console.error("STRIPE_SECRET_KEY is not set");
+    return { statusCode: 500, body: JSON.stringify({ error: "Stripe is not configured yet." }) };
+  }
+
+  const stripe = new Stripe(secretKey, { apiVersion: "2024-06-20" });
+
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        status: session.payment_status, // "paid" | "unpaid" | "no_payment_required"
+        email: session.customer_details ? session.customer_details.email : null,
+        amountTotal: session.amount_total, // smallest currency unit (cents for USD)
+        currency: session.currency,
+      }),
+    };
+  } catch (err) {
+    console.error("Stripe session lookup failed:", err);
+    return { statusCode: 404, body: JSON.stringify({ error: "Session not found" }) };
+  }
 };
-test

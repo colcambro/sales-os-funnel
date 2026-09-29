@@ -1,46 +1,45 @@
 [build]
   command = "npm run build"
-    # No `publish` dir set on purpose: the @netlify/vite-plugin-tanstack-start
-      # plugin (vite.config.ts) writes its SSR build straight to the
-        # `.netlify/v1/` convention (functions + edge-functions + static assets),
-          # which Netlify's build system auto-detects — that's what actually serves
-            # the sales/checkout/thank-you pages. Setting `publish` here would fight
-              # that convention.
-                functions = "netlify/functions"
-                
-                [functions]
-                  node_bundler = "esbuild"
-                  
-                  # netlify/functions/get-checkout-session.js is a plain hand-written Netlify
-                  # Function for Stripe (read-only session verification for the thank-you
-                  # page), separate from and additional to the TanStack Start adapter's
-                  # auto-generated SSR function. Checkout itself needs no function of its own
-                  # — it links straight to Stripe's hosted Payment Links (see checkout.tsx).
-                  #
-                  # This app is served at sossalesandscaling.com/sales-os/, proxied from
-                  # the main site's own separate Netlify project (see HANDOFF.md for that
-                  # proxy rule — mirrors the sister realestate-os-funnel project's
-                  # /realestate-os/ pattern). Netlify Functions always live at the fixed
-                  # /.netlify/functions/ path regardless of the app's own base path — outside
-                  # the /sales-os/* prefix the main site's proxy rule forwards — so this
-                  # rewrite brings them under that same prefix (src/routes/checkout.tsx and
-                  # thank-you.tsx call `${BASE_PATH}/api/...`, not /.netlify/functions/...
-                  # directly), making one single proxy rule on the main site cover both pages
-                  # and API calls.
-                  [[redirects]]
-                    from = "/sales-os/api/*"
-                      to = "/.netlify/functions/:splat"
-                        status = 200
-                          force = true
-                          
-                          # TODO: this is a separate Netlify site from realestate-os-funnel and needs
-                          # its own site ID plus STRIPE_SECRET_KEY set fresh in this site's own
-                          # dashboard (see .env.example). Nothing to configure in this file itself.
-                          #
-                          # TODO (deployment-time, not a code change): once this is live, the two
-                          # Sales.OS Stripe Payment Links' "after payment" redirect needs updating in
-                          # the Stripe Dashboard to https://sossalesandscaling.com/sales-os/thank-you
-                          # with ?session_id={CHECKOUT_SESSION_ID} appended (Stripe fills that
-                          # placeholder in automatically) — replacing wherever they currently
-                          # redirect. See src/routes/checkout.tsx's PAYMENT_LINKS comment.
-                          test
+  # No `publish` dir set on purpose: the @netlify/vite-plugin-tanstack-start
+  # plugin (vite.config.ts) writes its SSR build straight to the
+  # `.netlify/v1/` convention (functions + edge-functions + static assets),
+  # which Netlify's build system auto-detects — that's what actually serves
+  # the sales/checkout/thank-you pages. Setting `publish` here would fight
+  # that convention.
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# netlify/functions/get-checkout-session.js is a plain hand-written Netlify
+# Function for Stripe (read-only session verification for the thank-you
+# page), separate from and additional to the TanStack Start adapter's
+# auto-generated SSR function. Checkout itself needs no function of its own
+# — it links straight to Stripe's hosted Payment Links (see checkout.tsx).
+#
+# This app is served at sossalesandscaling.com/sales-os/, proxied from
+# the main site's own separate Netlify project (see HANDOFF.md for that
+# proxy rule — mirrors the sister realestate-os-funnel project's
+# /realestate-os/ pattern). Netlify Functions always live at the fixed
+# /.netlify/functions/ path regardless of the app's own base path — outside
+# the /sales-os/* prefix the main site's proxy rule forwards — so this
+# rewrite brings them under that same prefix (src/routes/checkout.tsx and
+# thank-you.tsx call `${BASE_PATH}/api/...`, not /.netlify/functions/...
+# directly), making one single proxy rule on the main site cover both pages
+# and API calls.
+[[redirects]]
+  from = "/sales-os/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
+
+# TODO: this is a separate Netlify site from realestate-os-funnel and needs
+# its own site ID plus STRIPE_SECRET_KEY set fresh in this site's own
+# dashboard (see .env.example). Nothing to configure in this file itself.
+#
+# TODO (deployment-time, not a code change): once this is live, the two
+# Sales.OS Stripe Payment Links' "after payment" redirect needs updating in
+# the Stripe Dashboard to https://sossalesandscaling.com/sales-os/thank-you
+# with ?session_id={CHECKOUT_SESSION_ID} appended (Stripe fills that
+# placeholder in automatically) — replacing wherever they currently
+# redirect. See src/routes/checkout.tsx's PAYMENT_LINKS comment.
