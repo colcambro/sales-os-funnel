@@ -68,32 +68,41 @@ export const INCLUDED_ITEMS: IncludedDeliverable[] = [
 
 // Full testimonial grid (10 cards, locked copy doc section 13). Local photo
 // paths are used for the headshots we have (Adam Sinclair, Taylor McDonald,
-// Nick McNally, Dave Lewis, Luis Guarin, Tony, Hannah — see public/images/),
-// plus Gary's G33 Media logo and Lewis Mitchell's Shield Healthcare Solutions
-// logo. All are re-compressed JPEGs (resized to a 500px max dimension)
-// regardless of their original format, so every path below ends in .jpg
-// even where the source was a .png/.webp. The rest render as text-forward
-// cards with an initials-avatar fallback (see index.tsx).
+// Nick McNally, Dave Lewis, Luis Guarin, Tony, Hannah, Gary McLellan, Sami
+// Eric, Adam Ormesher, Jamie Gemmill — see public/images/), plus Lewis
+// Mitchell's Shield Healthcare Solutions logo. Bren McKirdy has no photo yet
+// and renders with the initials-avatar fallback (see index.tsx). All photos
+// are re-compressed JPEGs (resized to a 500px max dimension) regardless of
+// their original format, so every path below ends in .jpg even where the
+// source was a .png/.webp.
 // Client-requested copy edits (2026-09-29) applied to Tony, Sami Eric, Bren
 // McKirdy, Hannah, Dave Lewis, Lewis Mitchell, Adam Ormesher and Jamie
 // Gemmill's quotes — see git history for the prior wording if needed.
+// Further client-requested edits (2026-09-29, second pass): Gary's full name
+// (Gary McLellan) and a real photo replacing the G33 Media logo; Lewis
+// Mitchell's title changed to Director of Shield Healthcare Solutions Ltd;
+// Sami Eric's title changed to Head of Business Development, Aegis Energy;
+// real photos added for Sami Eric, Adam Ormesher and Jamie Gemmill.
+// Third pass (2026-09-29): new testimonial added for Jordan Cherrie, Director
+// of Renew Vision Management, with a real photo.
 export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
   {
-    name: "Gary",
+    name: "Gary McLellan",
     role: "Founder, G33 Media",
     quote:
       "SOS was a great help in changing that. He tailored my 1-2-1 session to how a video production company actually wins work, rather than giving me a copy paste beat for beat sales script.",
-    image: `${BASE_PATH}/images/g33-media-logo.jpg`,
+    image: `${BASE_PATH}/images/gary-mclellan-photo.jpg`,
   },
   {
     name: "Sami Eric",
-    role: "Business Development Manager, Aegis Energy",
+    role: "Head of Business Development, Aegis Energy",
     quote:
       "Results wise - my pipeline is bigger, I'm getting more connections on LinkedIn and inbound, while I've got confidence booking meetings with cold calling at last.",
+    image: `${BASE_PATH}/images/sami-eric-photo.jpg`,
   },
   {
     name: "Lewis Mitchell",
-    role: "Healthcare Partner, Shield Healthcare Solutions / WPA",
+    role: "Director of Shield Healthcare Solutions Ltd",
     quote:
       "Our new account manager successfully closed two sales this week - his first two sales.",
     image: `${BASE_PATH}/images/shield-healthcare-logo.jpg`,
@@ -109,6 +118,7 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     role: "Student Lettings",
     quote:
       "Loads of value and the understanding of how to apply the sale training to our student market 100% made everything really relevant... 50 rooms let in Liverpool already this week.",
+    image: `${BASE_PATH}/images/adam-ormesher-photo.jpg`,
   },
   {
     name: "Luis Guarin",
@@ -122,6 +132,7 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     role: "Managing Director, We Love Your Projects",
     quote:
       "Working with Colin Campbell and SOS has been a game-changer for both me and my team. After the coaching, there was a noticeable lift in the energy and drive across the team.",
+    image: `${BASE_PATH}/images/jamie-gemmill-photo.jpg`,
   },
   {
     name: "Dave Lewis",
@@ -143,6 +154,13 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     quote:
       "The SOS Method has helped me grow so much faster in this industry and stay consistent. I've just had my biggest and best year after 3 years in real estate.",
     image: `${BASE_PATH}/images/hannah-photo.jpg`,
+  },
+  {
+    name: "Jordan Cherrie",
+    role: "Director, Renew Vision Management",
+    quote:
+      "I had grown the business to over £700K a year but relied heavily on referrals and word of mouth, using the sales system I grew my pipeline and finally crossed the £1M a year mark. My confidence in outreach, discovery meetings, and closing cold business has totally transformed how I can grow my business.",
+    image: `${BASE_PATH}/images/jordan-cherrie-photo.jpg`,
   },
 ];
 
