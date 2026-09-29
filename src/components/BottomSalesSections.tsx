@@ -9,10 +9,7 @@ export function BottomSalesSections() {
         <div className="absolute top-0 left-0 right-0 h-1.5 bg-primary"></div>
 
         <h3 className="font-heading italic text-2xl sm:text-4xl md:text-5xl font-black text-foreground mb-3 leading-tight tracking-tight">
-          Let's do this! You spend more a month on{" "}
-          <span className="text-primary underline decoration-primary decoration-2">
-            oatmilk lattes
-          </span>
+          Let's do this!
         </h3>
         <p className="text-xs sm:text-base text-secondary mb-8">
           Click the button below to access the one-time offer on the next page
