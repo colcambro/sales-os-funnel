@@ -85,6 +85,9 @@ export const INCLUDED_ITEMS: IncludedDeliverable[] = [
 // real photos added for Sami Eric, Adam Ormesher and Jamie Gemmill.
 // Third pass (2026-09-29): new testimonial added for Jordan Cherrie, Director
 // of Renew Vision Management, with a real photo.
+// Fourth pass (2026-09-29): Tony and Hannah given full names/titles (Tony
+// Mann, Hannah Pryde — both Real Estate Broker), replacing the placeholder
+// "Broker / System Testimonial" role.
 export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
   {
     name: "Gary McLellan",
@@ -142,15 +145,15 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     image: `${BASE_PATH}/images/dave-lewis-photo.jpg`,
   },
   {
-    name: "Tony",
-    role: "Broker / System Testimonial",
+    name: "Tony Mann",
+    role: "Real Estate Broker",
     quote:
       "Using the training modules and the system has been a gamechanger. Every possible thing you need is at your fingertips for prospecting and more.",
     image: `${BASE_PATH}/images/tony-photo.jpg`,
   },
   {
-    name: "Hannah",
-    role: "Broker / System Testimonial",
+    name: "Hannah Pryde",
+    role: "Real Estate Broker",
     quote:
       "The SOS Method has helped me grow so much faster in this industry and stay consistent. I've just had my biggest and best year after 3 years in real estate.",
     image: `${BASE_PATH}/images/hannah-photo.jpg`,
