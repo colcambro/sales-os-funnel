@@ -108,13 +108,14 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     role: "Director of Shield Healthcare Solutions Ltd",
     quote:
       "I had high expectations and they've been surpassed. We finally have a process from cold to client. The lesson on setting up reliable referrals generated sales after one afternoon of emails. And best of all, our new account manager successfully closed two sales this week - his first two sales.",
-    image: `${BASE_PATH}/images/shield-healthcare-logo.jpg`,
+    image: `${BASE_PATH}/images/lewis-mitchell-photo.png`,
   },
   {
     name: "Bren McKirdy",
     role: "Founder, One Wellness",
     quote:
       "I'd describe the coaching as practical, tailored and immediately actionable. Within just five days, we'd made back the annual investment organically by 10x, without spending a penny on paid ads.",
+    image: `${BASE_PATH}/images/bren-mckirdy-photo.jpg`,
   },
   {
     name: "Adam Ormesher",
