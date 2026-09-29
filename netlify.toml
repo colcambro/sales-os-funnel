@@ -31,6 +31,20 @@
   status = 200
   force = true
 
+# Same URL-prefix vs. physical-path mismatch as the /assets/* redirect above,
+# but for the testimonial headshots/logos in public/images/ (referenced as
+# plain "/images/..." <img src> paths in TestimonialGrid.tsx and
+# MeetFoundersSection.tsx). Vite copies public/ straight into dist/client/
+# with no /sales-os prefix, so without this rule every image 404s under the
+# /sales-os/ URL prefix the live site (and the proxy from the main site)
+# actually uses — this was shipped without it and caught after go-live via
+# broken testimonial photos (e.g. Gary / G33 Media).
+[[redirects]]
+  from = "/sales-os/images/*"
+  to = "/images/:splat"
+  status = 200
+  force = true
+
 # netlify/functions/get-checkout-session.js is a plain hand-written Netlify
 # Function for Stripe (read-only session verification for the thank-you
 # page), separate from and additional to the TanStack Start adapter's
