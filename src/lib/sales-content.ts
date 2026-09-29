@@ -93,7 +93,7 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     name: "Gary McLellan",
     role: "Founder, G33 Media",
     quote:
-      "SOS was a great help in changing that. He tailored my 1-2-1 session to how a video production company actually wins work, rather than giving me a copy paste beat for beat sales script.",
+      "SOS was a great help in changing my reliance on referrals and inbound. I could immediately apply the coaching to how a video production company actually wins work, rather than an overly generic copy paste beat for beat sales script. I now confidently book meetings with outreach then run discovery meetings with the LETS structure.",
     image: `${BASE_PATH}/images/gary-mclellan-photo.jpg`,
   },
   {
@@ -107,7 +107,7 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     name: "Lewis Mitchell",
     role: "Director of Shield Healthcare Solutions Ltd",
     quote:
-      "Our new account manager successfully closed two sales this week - his first two sales.",
+      "I had high expectations and they've been surpassed. We finally have a process from cold to client. The lesson on setting up reliable referrals generated sales after one afternoon of emails. And best of all, our new account manager successfully closed two sales this week - his first two sales.",
     image: `${BASE_PATH}/images/shield-healthcare-logo.jpg`,
   },
   {
