@@ -336,9 +336,9 @@ export default function SalesPage() {
 
             <p className="text-sm sm:text-base text-secondary leading-relaxed">
               Now, between building a 700-person team in the world's most exciting real estate
-              market and working directly with 125+ businesses across every industry from energy to
-              healthcare to luxury retail, they've taken those lessons and turned them into a
-              complete operating system.
+              market and working directly with 125+ businesses across every industry from
+              recruitment to insurance to property and real estate, they've taken those lessons and
+              turned them into a complete operating system.
             </p>
 
             {/* Mission Headline */}

@@ -67,15 +67,15 @@ export const INCLUDED_ITEMS: IncludedDeliverable[] = [
 
 // Full testimonial grid (10 cards, locked copy doc section 13). Local photo
 // paths are used for the headshots we have (Adam Sinclair, Taylor McDonald,
-// Nick McNally, Dave Lewis, Luis Guarin — see public/images/), plus Gary's
-// G33 Media logo. All are re-compressed JPEGs (resized to a 500px max
-// dimension) regardless of their original format, so every path below ends
-// in .jpg even where the source was a .png/.webp. The rest render as
-// text-forward cards with an initials-avatar fallback (see index.tsx).
-// Quotes 1, 3, 4, 6, 7 carry light wording edits per the client's
-// instruction (workshop -> coaching, some Colin -> SOS) — flagged in the
-// draft doc as worth a final read before shipping since they're edits to
-// real people's own words.
+// Nick McNally, Dave Lewis, Luis Guarin, Tony, Hannah — see public/images/),
+// plus Gary's G33 Media logo and Lewis Mitchell's Shield Healthcare Solutions
+// logo. All are re-compressed JPEGs (resized to a 500px max dimension)
+// regardless of their original format, so every path below ends in .jpg
+// even where the source was a .png/.webp. The rest render as text-forward
+// cards with an initials-avatar fallback (see index.tsx).
+// Client-requested copy edits (2026-09-29) applied to Tony, Sami Eric, Bren
+// McKirdy, Hannah, Dave Lewis, Lewis Mitchell, Adam Ormesher and Jamie
+// Gemmill's quotes — see git history for the prior wording if needed.
 export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
   {
     name: "Gary",
@@ -88,25 +88,26 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     name: "Sami Eric",
     role: "Business Development Manager, Aegis Energy",
     quote:
-      "Results wise - my pipeline is bigger, I'm getting more connections on LinkedIn, followers are up by about 600 after 2 months work.",
+      "Results wise - my pipeline is bigger, I'm getting more connections on LinkedIn and inbound, while I've got confidence booking meetings with cold calling at last.",
   },
   {
     name: "Lewis Mitchell",
     role: "Healthcare Partner, Shield Healthcare Solutions / WPA",
     quote:
-      "We recently took part in sales coaching with SOS for our private medical insurance company, and the experience was extremely valuable from start to finish. Following the coaching, our account manager successfully closed two sales - his first two sales.",
+      "Our new account manager successfully closed two sales this week - his first two sales.",
+    image: "/images/shield-healthcare-logo.jpg",
   },
   {
     name: "Bren McKirdy",
     role: "Founder, One Wellness",
     quote:
-      "I'd describe the coaching as practical, tailored and immediately actionable. Within just five days, we'd made back the investment organically, without spending a penny on paid ads.",
+      "I'd describe the coaching as practical, tailored and immediately actionable. Within just five days, we'd made back the annual investment organically by 10x, without spending a penny on paid ads.",
   },
   {
     name: "Adam Ormesher",
     role: "Student Lettings",
     quote:
-      "Loads of value and your understanding of student market 100% made everything really relevant... 50 rooms let in Liverpool already this week.",
+      "Loads of value and the understanding of how to apply the sale training to our student market 100% made everything really relevant... 50 rooms let in Liverpool already this week.",
   },
   {
     name: "Luis Guarin",
@@ -119,27 +120,27 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     name: "Jamie Gemmill",
     role: "Managing Director, We Love Your Projects",
     quote:
-      "Working with Colin Campbell has been a game-changer for both me and my team. After the coaching, there was a noticeable lift in the energy and drive across the team.",
+      "Working with Colin Campbell and SOS has been a game-changer for both me and my team. After the coaching, there was a noticeable lift in the energy and drive across the team.",
   },
   {
     name: "Dave Lewis",
     role: "Biograph London",
     quote:
-      "We've worked together now for the last 8 months and you've really improved my confidence in communicating, and helped develop a repeatable process for successfully taking on new clients. In the last 6 weeks alone, we've doubled the clients we look after, and the business's revenue.",
+      "I've used Colin's sales system for the last 8 months and you've really improved my confidence in communicating, and helped develop a repeatable process for successfully taking on new clients. In the last 6 weeks alone, we've doubled the clients we look after, and the business's revenue.",
     image: "/images/dave-lewis-photo.jpg",
   },
   {
     name: "Tony",
     role: "Broker / System Testimonial",
     quote:
-      "Using these training modules and systems have been a gamechanger. Every possible thing you need is at your fingertips.",
+      "Using the training modules and the system has been a gamechanger. Every possible thing you need is at your fingertips for prospecting and more.",
     image: "/images/tony-photo.jpg",
   },
   {
     name: "Hannah",
     role: "Broker / System Testimonial",
     quote:
-      "The SOS Method has helped me grow so fast in this industry and stay consistent. It's a game changer.",
+      "The SOS Method has helped me grow so much faster in this industry and stay consistent. I've just had my biggest and best year after 3 years in real estate.",
     image: "/images/hannah-photo.jpg",
   },
 ];

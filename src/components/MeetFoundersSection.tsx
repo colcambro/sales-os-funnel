@@ -76,8 +76,9 @@ export function MeetFoundersSection() {
             </p>
             <p>
               In 2021, Calum launched White & Co Real Estate with just eight people. Today the
-              company has grown to a team of more than 700 - and along the way, he's helped develop
-              hundreds of brokers using the sales systems, standards and processes he built.
+              company has grown to a team of more than 700, turning over $100 Million a year - and
+              along the way, he's helped develop hundreds of brokers using the sales systems,
+              standards and processes he built.
             </p>
           </div>
         </div>
