@@ -1,3 +1,5 @@
+import { BASE_PATH } from "../lib/base-path";
+
 export function MeetFoundersSection() {
   return (
     <section className="pt-2 pb-10 px-4 sm:px-6 max-w-5xl mx-auto">
@@ -32,7 +34,7 @@ export function MeetFoundersSection() {
 
         <div className="relative rounded-2xl overflow-hidden border border-border shadow-2xl bg-card aspect-[4/5]">
           <img
-            src="/images/colin-campbell-photo.jpg"
+            src={`${BASE_PATH}/images/colin-campbell-photo.jpg`}
             alt="Colin Campbell — Head of Education, Sales.OS"
             className="w-full h-full object-cover object-top"
             loading="lazy"
