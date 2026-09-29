@@ -1,20 +1,22 @@
+import { BASE_PATH } from "../lib/base-path";
+
 export const CHECKOUT_TESTIMONIALS = [
   {
     name: "Adam Sinclair",
     quote:
       "SOS added much-needed structure to our daily operations and gave my team the exact tools they needed to hit their revenue targets.",
-    image: "/images/adam-sinclair-photo.jpg",
+    image: `${BASE_PATH}/images/adam-sinclair-photo.jpg`,
   },
   {
     name: "Taylor McDonald",
     quote:
       "I was able to take what we'd learned and apply it in real time to close £8,000 worth of sales by the time we'd finished the programme.",
-    image: "/images/taylor-mcdonald-photo.jpg",
+    image: `${BASE_PATH}/images/taylor-mcdonald-photo.jpg`,
   },
   {
     name: "Nick McNally",
     quote: "Today's sales coaching with SOS was a game-changer for our team.",
-    image: "/images/nick-mcnally-photo.jpg",
+    image: `${BASE_PATH}/images/nick-mcnally-photo.jpg`,
   },
 ];
 
