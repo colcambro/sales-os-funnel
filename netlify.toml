@@ -1,15 +1,35 @@
 [build]
   command = "npm run build"
-  # No `publish` dir set on purpose: the @netlify/vite-plugin-tanstack-start
-  # plugin (vite.config.ts) writes its SSR build straight to the
-  # `.netlify/v1/` convention (functions + edge-functions + static assets),
-  # which Netlify's build system auto-detects — that's what actually serves
-  # the sales/checkout/thank-you pages. Setting `publish` here would fight
-  # that convention.
+  # `dist/client` holds the Vite client build (JS/CSS/robots.txt). We set
+  # `publish` explicitly (see below for why this matters) while `functions`
+  # points at our hand-written Stripe functions. The TanStack Start SSR
+  # function (.netlify/v1/functions/server.mjs, written by the
+  # @netlify/vite-plugin-tanstack-start plugin) is picked up automatically
+  # via the .netlify/v1/ convention and serves as the catch-all for any
+  # request that isn't a static file or an explicit redirect below.
+  publish = "dist/client"
   functions = "netlify/functions"
 
 [functions]
   node_bundler = "esbuild"
+
+# This app is served at sossalesandscaling.com/sales-os/, proxied from
+# the main site's own separate Netlify project (see HANDOFF.md for that
+# proxy rule). Vite's `base: "/sales-os/"` (vite.config.ts) makes the
+# built HTML/JS reference assets at URLs like
+# /sales-os/assets/styles-XXXX.css — but Vite's outDir is NOT prefixed
+# by `base`, so the files themselves physically land at dist/client/assets/*
+# (no /sales-os prefix). Without `publish` set, Netlify never uploads
+# dist/client as static assets at all, so every asset request — and even
+# with `publish` set, every request under the /sales-os/assets/ URL
+# prefix specifically — would fall through to the SSR function (which
+# doesn't know those routes) and 404/503 instead of serving the file. This
+# redirect bridges that URL-prefix vs. physical-path mismatch.
+[[redirects]]
+  from = "/sales-os/assets/*"
+  to = "/assets/:splat"
+  status = 200
+  force = true
 
 # netlify/functions/get-checkout-session.js is a plain hand-written Netlify
 # Function for Stripe (read-only session verification for the thank-you
@@ -17,16 +37,12 @@
 # auto-generated SSR function. Checkout itself needs no function of its own
 # — it links straight to Stripe's hosted Payment Links (see checkout.tsx).
 #
-# This app is served at sossalesandscaling.com/sales-os/, proxied from
-# the main site's own separate Netlify project (see HANDOFF.md for that
-# proxy rule — mirrors the sister realestate-os-funnel project's
-# /realestate-os/ pattern). Netlify Functions always live at the fixed
-# /.netlify/functions/ path regardless of the app's own base path — outside
-# the /sales-os/* prefix the main site's proxy rule forwards — so this
-# rewrite brings them under that same prefix (src/routes/checkout.tsx and
-# thank-you.tsx call `${BASE_PATH}/api/...`, not /.netlify/functions/...
-# directly), making one single proxy rule on the main site cover both pages
-# and API calls.
+# Netlify Functions always live at the fixed /.netlify/functions/ path
+# regardless of the app's own base path — outside the /sales-os/* prefix
+# the main site's proxy rule forwards — so this rewrite brings them under
+# that same prefix (src/routes/checkout.tsx and thank-you.tsx call
+# `${BASE_PATH}/api/...`, not /.netlify/functions/... directly), making one
+# single proxy rule on the main site cover both pages and API calls.
 [[redirects]]
   from = "/sales-os/api/*"
   to = "/.netlify/functions/:splat"
