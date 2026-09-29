@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { BASE_PATH } from "./base-path";
 import {
   FileSpreadsheet,
   LineChart,
@@ -82,7 +83,7 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     role: "Founder, G33 Media",
     quote:
       "SOS was a great help in changing that. He tailored my 1-2-1 session to how a video production company actually wins work, rather than giving me a copy paste beat for beat sales script.",
-    image: "/images/g33-media-logo.jpg",
+    image: `${BASE_PATH}/images/g33-media-logo.jpg`,
   },
   {
     name: "Sami Eric",
@@ -95,7 +96,7 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     role: "Healthcare Partner, Shield Healthcare Solutions / WPA",
     quote:
       "Our new account manager successfully closed two sales this week - his first two sales.",
-    image: "/images/shield-healthcare-logo.jpg",
+    image: `${BASE_PATH}/images/shield-healthcare-logo.jpg`,
   },
   {
     name: "Bren McKirdy",
@@ -114,7 +115,7 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     role: "Prime Property Auctions",
     quote:
       "SOS's sales training with the team at Prime was truly transformative. His approach provided our team with the confidence and motivation needed to put their knowledge into action.",
-    image: "/images/luis-guarin-photo.jpg",
+    image: `${BASE_PATH}/images/luis-guarin-photo.jpg`,
   },
   {
     name: "Jamie Gemmill",
@@ -127,21 +128,21 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     role: "Biograph London",
     quote:
       "I've used Colin's sales system for the last 8 months and you've really improved my confidence in communicating, and helped develop a repeatable process for successfully taking on new clients. In the last 6 weeks alone, we've doubled the clients we look after, and the business's revenue.",
-    image: "/images/dave-lewis-photo.jpg",
+    image: `${BASE_PATH}/images/dave-lewis-photo.jpg`,
   },
   {
     name: "Tony",
     role: "Broker / System Testimonial",
     quote:
       "Using the training modules and the system has been a gamechanger. Every possible thing you need is at your fingertips for prospecting and more.",
-    image: "/images/tony-photo.jpg",
+    image: `${BASE_PATH}/images/tony-photo.jpg`,
   },
   {
     name: "Hannah",
     role: "Broker / System Testimonial",
     quote:
       "The SOS Method has helped me grow so much faster in this industry and stay consistent. I've just had my biggest and best year after 3 years in real estate.",
-    image: "/images/hannah-photo.jpg",
+    image: `${BASE_PATH}/images/hannah-photo.jpg`,
   },
 ];
 
