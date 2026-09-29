@@ -143,7 +143,7 @@ function CheckoutPage() {
                         ? "bg-primary text-primary-foreground shadow"
                         : "text-accent-foreground hover:bg-background/60"
                     }`}
-                >
+                  >
                     Monthly
                   </button>
                   <button
@@ -187,7 +187,8 @@ function CheckoutPage() {
                   <p className="text-base font-semibold text-foreground">
                     We 100% guarantee you'll love Sales.OS - and your results - so much that if you
                     follow the plan and don't get results, we'll give you a refund.
-                </p>
+                  </p>
+                </div>
               </div>
             </div>
           </div>
