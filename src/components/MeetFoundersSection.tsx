@@ -18,7 +18,7 @@ export function MeetFoundersSection() {
         <div className="relative rounded-2xl overflow-hidden border border-border shadow-2xl bg-card aspect-[4/5]">
           <img
             src="https://vibe.filesafe.space/1789478637864975309/attachments/5684070f-d4f3-49eb-b960-c8ec1ee2bfe8.jpg"
-            alt="Calum White — Co-Founder of Sales.OS"
+            alt="Calum White — Founder of Sales.OS"
             className="w-full h-full object-cover object-top"
             loading="lazy"
           />
@@ -27,7 +27,7 @@ export function MeetFoundersSection() {
               Calum White
             </p>
             <p className="text-[10px] sm:text-xs text-white/80 uppercase tracking-wide">
-              Co-Founder
+              Founder
             </p>
           </div>
         </div>
