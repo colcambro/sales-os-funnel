@@ -1,9 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
 import {
-  Play,
-  Volume2,
-  VolumeX,
   ArrowRight,
   ShieldCheck,
   Lock,
@@ -52,9 +48,6 @@ function HeaderLogo() {
 }
 
 export default function SalesPage() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 selection:text-primary-foreground">
       {/* 1. TOP ANNOUNCEMENT BAR */}
@@ -106,58 +99,19 @@ export default function SalesPage() {
 
         {/* 3. VIDEO BOX */}
         <div className="relative max-w-4xl mx-auto rounded-2xl overflow-hidden border border-border bg-card shadow-2xl">
-          <div className="relative aspect-video w-full bg-accent flex items-center justify-center overflow-hidden">
-            <img
-              src="https://vibe.filesafe.space/1789478637864975309/attachments/f1acfc03-dbac-4cdf-b433-6351084dafae.png"
-              alt="Sales.OS Logo"
-              className="w-full h-full object-contain p-8"
+          <div className="relative aspect-video w-full bg-black">
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src="https://www.youtube.com/embed/82q8puAtlH8?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1"
+              title="Sales.OS — a quick video from Calum & Colin, founders of Sales.OS"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
             />
-
-            {!isPlaying ? (
-              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-6 text-center">
-                <div className="mb-4">
-                  <p className="font-heading text-xl sm:text-2xl font-extrabold text-foreground tracking-wide">
-                    Sales.OS
-                  </p>
-                </div>
-                <button
-                  onClick={() => setIsPlaying(true)}
-                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all mb-4 cursor-pointer"
-                  aria-label="Play VSL Video"
-                >
-                  <Play className="w-10 h-10 sm:w-12 sm:h-12 fill-primary-foreground ml-1" />
-                </button>
-                <div className="text-xs font-bold uppercase tracking-widest text-primary bg-black/80 border border-primary/40 px-3 py-1 rounded-full">
-                  Watch this quick video from Calum & Colin, founders of Sales.OS
-                </div>
-              </div>
-            ) : (
-              <div className="absolute inset-0 bg-black flex flex-col items-center justify-center p-6 text-center">
-                <div className="w-full h-full flex flex-col items-center justify-center bg-card rounded-lg p-6 border border-border">
-                  <div className="flex items-center gap-3 text-primary mb-6">
-                    <span className="w-3 h-3 rounded-full bg-primary animate-ping"></span>
-                    <span className="text-xs font-bold tracking-wider uppercase">
-                      Streaming Sales.OS Video
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-4 bg-background px-4 py-2 rounded-lg border border-border">
-                    <button
-                      onClick={() => setIsMuted(!isMuted)}
-                      className="text-secondary hover:text-foreground flex items-center gap-2 text-xs font-medium"
-                    >
-                      {isMuted ? (
-                        <VolumeX className="w-4 h-4 text-primary" />
-                      ) : (
-                        <Volume2 className="w-4 h-4 text-primary" />
-                      )}
-                      {isMuted ? "Sound Muted" : "Audio Active"}
-                    </button>
-                    <span className="text-border">|</span>
-                    <span className="text-xs text-secondary">03:42 / 08:24</span>
-                  </div>
-                </div>
-              </div>
-            )}
+          </div>
+          <div className="px-4 py-3 text-center bg-card border-t border-border">
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">
+              Watch this quick video from Calum & Colin, founders of Sales.OS
+            </p>
           </div>
         </div>
 
