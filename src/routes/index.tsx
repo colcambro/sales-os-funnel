@@ -102,7 +102,7 @@ export default function SalesPage() {
           <div className="relative aspect-video w-full bg-black">
             <iframe
               className="absolute inset-0 w-full h-full"
-              src="https://www.youtube.com/embed/82q8puAtlH8?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&cc_load_policy=0"
+              src="https://www.youtube.com/embed/yh8sf2Fz1FI?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&cc_load_policy=0"
               title="Sales.OS — a quick video from Calum & Colin, founders of Sales.OS"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
