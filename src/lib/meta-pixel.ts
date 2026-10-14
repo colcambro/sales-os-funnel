@@ -1,7 +1,11 @@
 // Meta (Facebook) Pixel helper
-// Pixel ID is a publishable value, safe to ship in the client bundle.
+// Pixel IDs are publishable values, safe to ship in the client bundle.
 
 export const META_PIXEL_ID = "1619491839708065";
+// Second pixel added per Colin, Oct 2026 — runs alongside the pixel above
+// (both fire on every event; this is the standard supported way to send
+// the same events to two ad accounts' pixels).
+export const META_PIXEL_ID_2 = "2162077801014164";
 
 declare global {
   interface Window {
@@ -43,6 +47,7 @@ export function initMetaPixel(): void {
   // it's the vendor's standard snippet) reassigns it at runtime.
   const fbq = window.fbq as ((...args: unknown[]) => void) | undefined;
   fbq?.("init", META_PIXEL_ID);
+  fbq?.("init", META_PIXEL_ID_2);
   fbq?.("track", "PageView");
 }
 
