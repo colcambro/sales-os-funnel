@@ -184,14 +184,15 @@ export default function SalesPage() {
             <div>
               <h2 className="font-heading text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.1]">
                 Why Sales.OS Is The{" "}
-                <span className="underline decoration-primary decoration-4">Shortcut</span> To
+                <span className="text-primary">Shortcut</span> To
                 Selling Consistently - In Any Industry
               </h2>
             </div>
 
             <p className="text-base sm:text-lg font-medium text-foreground leading-relaxed">
-              <strong className="font-serif italic text-primary">IT'S TRUE:</strong> the salespeople
-              who consistently perform at the highest level DON'T simply rely on more leads, more
+              <strong className="text-primary">Bottom Line Up Front:</strong> the salespeople
+              who consistently perform at the highest level{" "}
+              <span className="text-primary">DON'T</span> simply rely on more leads, more
               calls or working longer hours...
             </p>
 
