@@ -143,10 +143,11 @@ export default function SalesPage() {
 
         <div className="space-y-5 text-left">
           <p className="text-sm sm:text-base text-secondary leading-relaxed">
-            Sales.OS is a sales operating system, not a course. It's two things working together:
-            video training that teaches you the frameworks and techniques behind every stage of
-            the sale, and operator tools that let you make those frameworks bespoke to your
-            business - whatever industry you're in, whatever you sell.
+            Sales.OS is a sales operating system, not a course. It's four things working together:
+            video coaching that teaches you the frameworks and techniques that convert, operator
+            tools that make those frameworks bespoke and apply them directly to your industry and
+            whatever you sell, knowledge checks that confirm what's actually landing, and
+            exclusive seminar and workshop recordings.
           </p>
 
           <p className="text-sm sm:text-base text-secondary leading-relaxed">
