@@ -135,6 +135,46 @@ export default function SalesPage() {
       {/* SECTION DIVIDER */}
       <div className="border-t border-border my-2 max-w-6xl mx-auto"></div>
 
+      {/* 4.5. WHAT IS SALES.OS SECTION */}
+      <section className="py-10 px-4 sm:px-6 max-w-3xl mx-auto text-center">
+        <h2 className="font-heading text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-foreground leading-tight mb-6">
+          What Is Sales.OS
+        </h2>
+
+        <div className="space-y-5 text-left">
+          <p className="text-sm sm:text-base text-secondary leading-relaxed">
+            Sales.OS is a sales operating system, not a course. It's two things working together:
+            video training that teaches you the frameworks and techniques behind every stage of
+            the sale, and operator tools that let you make those frameworks bespoke to your
+            business - whatever industry you're in, whatever you sell.
+          </p>
+
+          <p className="text-sm sm:text-base text-secondary leading-relaxed">
+            That combination is what makes Sales.OS different from any other sales coaching
+            platform. Most training stops at the video - you watch it, nod along, then you're on
+            your own to work out how it applies to your product, your market, your calls.
+            Sales.OS doesn't leave you there. The Bottleneck Calculator tells you whether skills,
+            volume, or process is actually costing you deals. The Sales Playbook gives you the
+            structure to run every call the same way. The Meeting Follow-Up Builder and AFTERS
+            Framework Value Planner turn meetings into closed deals. The APAC Objection Handler
+            Planner gives you a plan for every objection before you hear it. The Sales Graveyard
+            Diagnostic shows you exactly where deals are dying in your pipeline.
+          </p>
+
+          <p className="text-base sm:text-lg font-bold text-foreground leading-relaxed">
+            And, importantly, how to fix all of it.
+          </p>
+
+          <p className="text-sm sm:text-base text-secondary leading-relaxed">
+            Built from 25 years combined running sales teams and closing deals ourselves. You
+            learn it, then you build it into your own process - not someone else's.
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION DIVIDER */}
+      <div className="border-t border-border my-2 max-w-6xl mx-auto"></div>
+
       {/* 5. TWO-COLUMN LAYOUT (LEFT: EDITORIAL LETTER / RIGHT: STICKY OFFER STACK) */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
