@@ -166,6 +166,13 @@ export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
       "I had grown the business to over £700K a year but relied heavily on referrals and word of mouth, using the sales system I grew my pipeline and finally crossed the £1M a year mark. My confidence in outreach, discovery meetings, and closing cold business has totally transformed how I can grow my business.",
     image: `${BASE_PATH}/images/jordan-cherrie-photo.jpg`,
   },
+  {
+    name: "Jay Lawrence",
+    role: "Investment Director, Rathbones",
+    quote:
+      "SOS has completely changed how I generate business, from cold outreach to deeper discovery conversations and a stronger LinkedIn presence. And it hasn't just reduced my reliance on referrals - it's taught me how to generate them more consistently too.",
+    image: `${BASE_PATH}/images/jay-lawrence-photo.jpg`,
+  },
 ];
 
 export const THIRTY_DAY_PILLARS: ThirtyDayPillar[] = [
