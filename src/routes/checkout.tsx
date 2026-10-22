@@ -19,8 +19,8 @@ import { ShieldCheck, Lock, Zap, ArrowRight } from "lucide-react";
 // appended) instead of wherever they currently redirect. That's a
 // deployment-time step, not something this app's code can do on its own.
 const PAYMENT_LINKS = {
-  monthly: "https://buy.stripe.com/5kQ9AT1zP10I9Ih71OgnL20",
-  annual: "https://buy.stripe.com/00wdR93HX5gYf2B3PCgnL1Z",
+  monthly: "https://buy.stripe.com/bJeaEX3Q3bfA9vT5Cxbwk01",
+  annual: "https://buy.stripe.com/dRm28rcmz1F0fUh2qlbwk03",
 } as const;
 
 const PRICING = {
