@@ -49,17 +49,12 @@ function ThankYouPage() {
   // happened and gets the real amount/email for the Purchase pixel event.
   useEffect(() => {
     if (!search.session_id) {
-      // No Stripe session on this visit (e.g. direct nav during preview) —
-      // fall back to a placeholder-value Purchase fire so the pixel still
-      // has *something* during testing. Flagged, not for real launch traffic.
-      if (!purchaseFired) {
-        trackMetaEvent("Purchase", {
-          content_name: "Sales.OS Launch Special",
-          currency: "USD",
-          value: search.total ? Number(search.total) : PLACEHOLDER_PRICE_USD,
-        });
-        setPurchaseFired(true);
-      }
+      // No Stripe session on this visit (e.g. a direct nav, bot/crawler
+      // hit, or someone just opening this URL without paying) — do not
+      // fire a Purchase event here. This used to fire a placeholder-value
+      // Purchase as a testing convenience, which was counting fake
+      // purchases in production; removed. A Purchase now only fires once
+      // Stripe verifies a real, paid session below.
       return;
     }
 
