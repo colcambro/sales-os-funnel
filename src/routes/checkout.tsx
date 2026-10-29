@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { trackMetaEvent } from "../lib/meta-pixel";
+import { getVisitId, CLIENT_REFERENCE_ID_PATTERN } from "../lib/attribution";
 import { CHECKOUT_TESTIMONIALS } from "../components/TestimonialGrid";
 import { ShieldCheck, Lock, Zap, ArrowRight } from "lucide-react";
 
@@ -50,6 +51,8 @@ export const Route = createFileRoute("/checkout")({
 
 function CheckoutPage() {
   const [plan, setPlan] = useState<"monthly" | "annual">("annual");
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   useEffect(() => {
     trackMetaEvent("InitiateCheckout", {
@@ -67,6 +70,29 @@ function CheckoutPage() {
       currency: "USD",
       value: PRICING[next].value,
     });
+  }
+
+  // Sends the customer straight to the matching live Stripe Payment Link.
+  // Passes the visit_id captured on page load (see src/lib/attribution.ts)
+  // through as client_reference_id — the one passthrough param Stripe
+  // Payment Links support via URL. The webhook (sos-site repo) looks this
+  // up against the `visits` table to attach UTM/fbclid/fbp/fbc to the
+  // payments row. Re-validated here even though every visit_id we generate
+  // is already a plain uuid.
+  function handleStripeCheckout() {
+    setCheckoutError(null);
+    setIsRedirecting(true);
+    try {
+      const baseLink = PAYMENT_LINKS[plan];
+      const visitId = getVisitId();
+      const hasValidVisitId = visitId != null && CLIENT_REFERENCE_ID_PATTERN.test(visitId);
+      window.location.href = hasValidVisitId
+        ? `${baseLink}?client_reference_id=${encodeURIComponent(visitId)}`
+        : baseLink;
+    } catch {
+      setCheckoutError("Something went wrong opening checkout. Please try again.");
+      setIsRedirecting(false);
+    }
   }
 
   // Reuses the same locked checkout-style testimonials as the main sales
@@ -168,12 +194,24 @@ function CheckoutPage() {
                   </span>
                 </div>
 
-                <a
-                  href={PAYMENT_LINKS[plan]}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base py-3.5 px-6 hover:opacity-90 transition"
-                >
+            <button
+              type="button"
+              onClick={handleStripeCheckout}
+              disabled={isRedirecting}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base py-3.5 px-6 hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isRedirecting ? (
+                "Redirecting to secure checkout…"
+              ) : (
+                <>
                   Pay Securely with Stripe <ArrowRight className="w-4 h-4" />
-                </a>
+                </>
+              )}
+            </button>
+
+            {checkoutError && (
+              <p className="text-xs text-destructive text-center">{checkoutError}</p>
+            )}
               </div>
 
               <div className="flex flex-col items-center gap-3 pt-6">
