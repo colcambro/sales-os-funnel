@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportVibeError } from "../lib/vibe-error-reporting";
 import { initMetaPixel } from "../lib/meta-pixel";
+import { captureAttribution } from "../lib/attribution";
 import { BASE_PATH } from "../lib/base-path";
 
 function NotFoundComponent() {
@@ -169,7 +170,8 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   useEffect(() => {
-    initMetaPixel();
+    captureAttribution();
+        initMetaPixel();
   }, []);
 
   return (
