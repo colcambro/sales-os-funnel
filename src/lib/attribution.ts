@@ -22,7 +22,20 @@
  * Must never block page render or video playback: every storage/network
  * call here is wrapped in try/catch, the Supabase insert is fire-and-forget
  * (never awaited by the caller), and nothing here throws out of this module.
+ *
+ * Consent: captureAttribution() sends data to Supabase (a third party, from
+ * the browser's perspective) and is "marketing" under the cookie banner —
+ * see src/lib/consent.ts and __root.tsx. It must only be called once the
+ * visitor has accepted. stashAttributionParams(), by contrast, only reads
+ * the current URL and writes to sessionStorage (same-origin, no network),
+ * so it's safe to call unconditionally on every page load *before* consent
+ * — this is what stops attribution breaking for anyone who lands on an ad
+ * URL, browses to another route, and only then accepts the banner: by the
+ * time they accept, window.location.search no longer has the ad's params,
+ * so captureAttribution() falls back to whatever was stashed here.
  */
+
+const PENDING_KEY = "sos_pending_attribution";
 
 const STORAGE_KEY = "sos_visit_id";
 
@@ -31,7 +44,13 @@ const STORAGE_KEY = "sos_visit_id";
 // localStorage is blocked, partitioned, or evicted.
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 180; // 180 days
 
-const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
+const UTM_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+] as const;
 
 // Meta Ads Manager's own dynamic URL parameters — see the module comment
 // above. Captured whenever present, but not part of the hasUtm gate below
@@ -48,7 +67,9 @@ export const CLIENT_REFERENCE_ID_PATTERN = /^[A-Za-z0-9_-]{1,200}$/;
 function readCookie(name: string): string | null {
   try {
     const escaped = name.replace(/([.$?*|{}()[\]\\/+^])/g, "\\$1");
-    const match = document.cookie.match(new RegExp(`(?:^|; )${escaped}=([^;]*)`));
+    const match = document.cookie.match(
+      new RegExp(`(?:^|; )${escaped}=([^;]*)`),
+    );
     return match ? decodeURIComponent(match[1]) : null;
   } catch {
     return null;
@@ -94,7 +115,10 @@ function storeVisitId(id: string): void {
 
 function newVisitId(): string {
   try {
-    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    if (
+      typeof crypto !== "undefined" &&
+      typeof crypto.randomUUID === "function"
+    ) {
       return crypto.randomUUID();
     }
   } catch {
@@ -109,17 +133,57 @@ function newVisitId(): string {
   });
 }
 /**
- * Call once on initial page load (see __root.tsx's RootComponent). Reads
- * UTMs/fbclid from the URL and the _fbp/_fbc cookies Meta Pixel sets.
+ * Call on every page load, *before* a consent decision exists — reads
+ * UTMs/fbclid/the Meta Ads Manager placement params from the current URL
+ * and, only if any are present, saves them to sessionStorage so they're not
+ * lost if the visitor browses to another route before accepting the cookie
+ * banner. Same-origin storage only, no network call, so this needs no
+ * consent itself (see the module comment above).
+ */
+export function stashAttributionParams(): void {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const hasUtm = UTM_KEYS.some((key) => params.has(key));
+    if (!hasUtm) return;
+
+    const row: Record<string, string | null> = {};
+    for (const key of UTM_KEYS) row[key] = params.get(key);
+    for (const key of META_PLACEMENT_KEYS) row[key] = params.get(key);
+    row["fbclid"] = params.get("fbclid");
+    row["landing_url"] = window.location.href;
+    row["referrer"] = document.referrer || null;
+
+    sessionStorage.setItem(PENDING_KEY, JSON.stringify(row));
+  } catch {
+    // Non-fatal — worst case captureAttribution() falls back to whatever
+    // (if anything) the current URL still has when consent is granted.
+  }
+}
+
+function readPendingParams(): Record<string, string | null> | null {
+  try {
+    const raw = sessionStorage.getItem(PENDING_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Call once the visitor has accepted marketing cookies (see
+ * __root.tsx's RootComponent, gated on src/lib/consent.ts). Reads
+ * UTMs/fbclid from the current URL, falling back to whatever
+ * stashAttributionParams() saved earlier in this session if the URL no
+ * longer carries them (e.g. consent was accepted from a later page).
  *
  * Strict first-touch: if a visit_id is already stored (localStorage or the
  * cookie fallback), this is a no-op — we never overwrite the visitor's
  * original attribution, even if the current URL carries a different/newer
  * set of UTMs (a later ad click, a reshared link, etc). Only when nothing
- * is stored yet, and the URL carries UTMs, do we mint a new visit_id, store
- * it (localStorage + a 180-day cookie, so it survives Safari's storage
- * limits and private-browsing sessions), and fire a non-blocking insert
- * into Supabase's `visits` table.
+ * is stored yet, and UTMs are available (URL or stash), do we mint a new
+ * visit_id, store it (localStorage + a 180-day cookie, so it survives
+ * Safari's storage limits and private-browsing sessions), and fire a
+ * non-blocking insert into Supabase's `visits` table.
  */
 export function captureAttribution(): void {
   try {
@@ -127,13 +191,15 @@ export function captureAttribution(): void {
 
     const params = new URLSearchParams(window.location.search);
     const hasUtm = UTM_KEYS.some((key) => params.has(key));
-    if (!hasUtm) return;
+    const pending = hasUtm ? null : readPendingParams();
+    if (!hasUtm && !pending) return;
 
     const visitId = newVisitId();
     storeVisitId(visitId);
 
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as
+      string | undefined;
     if (!supabaseUrl || !supabaseAnonKey) {
       console.warn(
         "[attribution] VITE_SUPABASE_URL/VITE_SUPABASE_ANON_KEY not set — skipping visit capture.",
@@ -141,19 +207,38 @@ export function captureAttribution(): void {
       return;
     }
 
-    const row: Record<string, string | null> = {
-      id: visitId,
-      landing_url: window.location.href,
-      referrer: document.referrer || null,
-      fbclid: params.get("fbclid"),
-      fbp: readCookie("_fbp"),
-      fbc: readCookie("_fbc"),
-    };
+    // Prefer the live URL; fall back to whatever stashAttributionParams()
+    // saved earlier in this session if consent arrived on a later page.
+    const row: Record<string, string | null> = hasUtm
+      ? {
+          id: visitId,
+          landing_url: window.location.href,
+          referrer: document.referrer || null,
+          fbclid: params.get("fbclid"),
+        }
+      : {
+          id: visitId,
+          landing_url: pending?.["landing_url"] ?? window.location.href,
+          referrer: pending?.["referrer"] ?? (document.referrer || null),
+          fbclid: pending?.["fbclid"] ?? null,
+        };
     for (const key of UTM_KEYS) {
-      row[key] = params.get(key);
+      row[key] = hasUtm ? params.get(key) : (pending?.[key] ?? null);
     }
     for (const key of META_PLACEMENT_KEYS) {
-      row[key] = params.get(key);
+      row[key] = hasUtm ? params.get(key) : (pending?.[key] ?? null);
+    }
+    // _fbp/_fbc are set by the Meta Pixel script itself, so they're only
+    // ever readable from live cookies, never from the stash — if consent
+    // arrives after the pixel has since loaded (see __root.tsx) these will
+    // still be populated; if the pixel hasn't loaded yet they're null,
+    // same as before this change.
+    row["fbp"] = readCookie("_fbp");
+    row["fbc"] = readCookie("_fbc");
+    try {
+      sessionStorage.removeItem(PENDING_KEY);
+    } catch {
+      // Non-fatal.
     }
 
     // Fire-and-forget on purpose — a slow or failed Supabase insert must
