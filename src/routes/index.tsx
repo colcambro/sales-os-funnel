@@ -10,10 +10,11 @@ import { INCLUDED_ITEMS, VIDEO_TESTIMONIALS, THIRTY_DAY_PILLARS } from "../lib/s
 import { BottomSalesSections } from "../components/BottomSalesSections";
 import { MeetFoundersSection } from "../components/MeetFoundersSection";
 import { TestimonialGrid, CHECKOUT_TESTIMONIALS } from "../components/TestimonialGrid";
-
+import { BASE_PATH } from "../lib/base-path";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
+      
       { title: "Sales.OS — The Complete Sales Operating System" },
       {
         name: "description",
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: `https://sossalesandscaling.com${BASE_PATH}/` }],
   }),
   component: SalesPage,
 });
