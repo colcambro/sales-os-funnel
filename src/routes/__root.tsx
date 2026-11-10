@@ -182,13 +182,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   );
 }
 
-// Fires the two pieces of marketing tracking this app does — the
-// fbclid/UTM capture (Supabase insert) and the Meta Pixel (fbq script +
-// PageView, both sent to Facebook). Both are gated on cookie consent; see
-// src/lib/consent.ts and ConsentBanner below.
+// Fires the fbclid/UTM capture (a Supabase insert of attribution data) —
+// still gated on cookie consent; see src/lib/consent.ts and ConsentBanner
+// below. Meta Pixel itself is no longer gated here — see the useEffect
+// below and the Nov 2026 note on initMetaPixel()'s call site.
 function runMarketingSideEffects(): void {
-  captureAttribution();
-  initMetaPixel();
+    captureAttribution();
 }
 
 function RootComponent() {
@@ -200,10 +199,19 @@ function RootComponent() {
     // visitor browses to another route before accepting the banner.
     stashAttributionParams();
 
-    // Already consented (a prior visit, or earlier this session)? Run the
-    // marketing side effects immediately, same as before this app had a
-    // cookie banner. Otherwise ConsentBanner's onAccept runs them instead,
-    // the first time this visitor says yes.
+    // Meta Pixel: cleared by legal counsel (Nov 2026) to load and fire its
+    // default PageView on every visit, without waiting for the cookie
+    // banner — unlike the fbclid/UTM Supabase capture below, this is no
+    // longer gated on consent. initMetaPixel() is itself idempotent (early
+    // -returns if window.fbq already exists), so this is safe to call
+    // unconditionally even though ConsentBanner's onAccept also calls it.
+    initMetaPixel();
+
+    // Attribution capture (writes to our own Supabase, not Meta) stays
+    // gated — the lawyer's clearance was specifically about Meta tracking,
+    // not this. Already consented (a prior visit, or earlier this
+    // session)? Run it immediately. Otherwise ConsentBanner's onAccept
+    // runs it instead, the first time this visitor says yes.
     if (getConsent()?.marketing) {
       runMarketingSideEffects();
     }
