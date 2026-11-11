@@ -49,6 +49,17 @@ function ThankYouPage() {
   const [resolvedEmail, setResolvedEmail] = useState<string | null>(search.email || null);
   const [purchaseFired, setPurchaseFired] = useState(false);
 
+  // Splits a full name ("Jane Smith") into Advanced Matching's separate
+  // fn/ln fields. A single-word name (no space) is passed as fn only —
+  // Meta's own docs say to omit ln rather than guess at it.
+  function splitName(fullName: string): { fn?: string; ln?: string } {
+    const trimmed = fullName.trim();
+    if (!trimmed) return {};
+    const spaceIdx = trimmed.indexOf(" ");
+    if (spaceIdx === -1) return { fn: trimmed };
+    return { fn: trimmed.slice(0, spaceIdx), ln: trimmed.slice(spaceIdx + 1).trim() || undefined };
+  }
+
   // Look up the real Stripe session server-side rather than trusting the
   // client-editable query string — this is what confirms the sale actually
   // happened and gets the real amount/email for the Purchase pixel event.
@@ -74,6 +85,8 @@ function ThankYouPage() {
         (data: {
           status?: string;
           email?: string | null;
+          name?: string | null;
+          phone?: string | null;
           amountTotal?: number;
           currency?: string;
         }) => {
@@ -81,12 +94,17 @@ function ThankYouPage() {
           if (data.email) {
             setResolvedEmail(data.email);
             // Advanced Matching: re-init both pixels now that we have a
-            // real, Stripe-verified email for this visitor. Only `em` and
-            // `external_id` are available here today — ph/fn/ln would need
-            // get-checkout-session.js extended to also return Stripe's
-            // customer_details.name/phone, which isn't wired yet.
+            // real, Stripe-verified email (and, when Stripe collected them,
+            // name/phone) for this visitor. setAdvancedMatching normalizes
+            // ph to digits-only itself, so Stripe's E.164-ish
+            // "+971501234567" becomes "971501234567" — digits with country
+            // code, no extra handling needed here.
+            const { fn, ln } = data.name ? splitName(data.name) : {};
             setAdvancedMatching({
               em: data.email,
+              ph: data.phone || undefined,
+              fn,
+              ln,
               external_id: search.session_id,
             });
           }
