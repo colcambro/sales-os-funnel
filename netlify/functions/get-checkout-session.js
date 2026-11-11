@@ -4,6 +4,8 @@
 // (src/routes/thank-you.tsx) can show the real customer email and fire the
 // Meta Pixel "Purchase" event with the actual amount charged, instead of
 // trusting whatever is in the URL's query string (which anyone could edit).
+// Also returns name/phone (when Stripe collected them) so the Purchase-time
+// Advanced Matching re-init can include fn/ln/ph, not just em.
 //
 // Checkout itself doesn't go through this app — the checkout page
 // (src/routes/checkout.tsx) links straight to Stripe's own hosted Payment
@@ -44,6 +46,8 @@ export const handler = async (event) => {
       body: JSON.stringify({
         status: session.payment_status, // "paid" | "unpaid" | "no_payment_required"
         email: session.customer_details ? session.customer_details.email : null,
+        name: session.customer_details ? session.customer_details.name : null,
+        phone: session.customer_details ? session.customer_details.phone : null,
         amountTotal: session.amount_total, // smallest currency unit (cents for USD)
         currency: session.currency,
       }),
