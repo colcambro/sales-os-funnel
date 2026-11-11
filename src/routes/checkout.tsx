@@ -53,23 +53,39 @@ function CheckoutPage() {
   const [plan, setPlan] = useState<"monthly" | "annual">("annual");
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  // One eventID per checkout visit, reused on every InitiateCheckout fire
+  // below (including a plan toggle) so Meta treats them as the same event
+  // for browser/server dedup rather than double-counting a toggle re-fire.
+  const [checkoutEventId] = useState<string>(() =>
+    typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+  );
 
   useEffect(() => {
-    trackMetaEvent("InitiateCheckout", {
-      content_name: "Sales.OS Launch Special",
-      currency: "USD",
-      value: PRICING[plan].value,
-    });
+    trackMetaEvent(
+      "InitiateCheckout",
+      {
+        content_name: "Sales.OS Launch Special",
+        currency: "USD",
+        value: PRICING[plan].value,
+      },
+      { eventID: checkoutEventId },
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handlePlanChange(next: "monthly" | "annual") {
     setPlan(next);
-    trackMetaEvent("InitiateCheckout", {
-      content_name: "Sales.OS Launch Special",
-      currency: "USD",
-      value: PRICING[next].value,
-    });
+    trackMetaEvent(
+      "InitiateCheckout",
+      {
+        content_name: "Sales.OS Launch Special",
+        currency: "USD",
+        value: PRICING[next].value,
+      },
+      { eventID: checkoutEventId },
+    );
   }
 
   // Sends the customer straight to the matching live Stripe Payment Link.
@@ -146,7 +162,7 @@ function CheckoutPage() {
                 Step 2 of 3: Enrollment Details
               </h1>
               <p className="text-xs sm:text-sm text-muted-foreground mb-6">
-                Enter your contact & payment details below for instant access to Sales.OS.
+                Enter your contact &amp; payment details below for instant access to Sales.OS.
               </p>
 
               {/* ════════════════════════════════════════════════════════════════
@@ -157,7 +173,7 @@ function CheckoutPage() {
                   and no custom Checkout Session needs creating here since
                   Stripe creates one automatically when the customer opens the
                   Payment Link.
-              ════════════════════════════════════════════════════════════════ */}
+                  ════════════════════════════════════════════════════════════════ */}
               <div className="rounded-xl border border-border bg-background p-5 sm:p-6 space-y-4">
                 {/* Plan toggle */}
                 <div className="grid grid-cols-2 gap-2 p-1 rounded-lg bg-accent border border-border">
@@ -194,24 +210,24 @@ function CheckoutPage() {
                   </span>
                 </div>
 
-            <button
-              type="button"
-              onClick={handleStripeCheckout}
-              disabled={isRedirecting}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base py-3.5 px-6 hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {isRedirecting ? (
-                "Redirecting to secure checkout…"
-              ) : (
-                <>
-                  Pay Securely with Stripe <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
+                <button
+                  type="button"
+                  onClick={handleStripeCheckout}
+                  disabled={isRedirecting}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-heading font-bold text-sm sm:text-base py-3.5 px-6 hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {isRedirecting ? (
+                    "Redirecting to secure checkout…"
+                  ) : (
+                    <>
+                      Pay Securely with Stripe <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
 
-            {checkoutError && (
-              <p className="text-xs text-destructive text-center">{checkoutError}</p>
-            )}
+                {checkoutError && (
+                  <p className="text-xs text-destructive text-center">{checkoutError}</p>
+                )}
               </div>
 
               <div className="flex flex-col items-center gap-3 pt-6">

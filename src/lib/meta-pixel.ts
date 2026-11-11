@@ -52,13 +52,58 @@ export function initMetaPixel(): void {
 }
 
 /**
- * Track a standard Meta Pixel event. Falls back to no-op if fbq isn't loaded.
+ * Track a standard Meta Pixel event. Pass `options.eventID` to dedup a
+ * browser-fired event against its server-side Conversions API twin (same
+ * event_id on both sides) — Meta merges them into one for reporting
+ * instead of double-counting. Falls back to no-op if fbq isn't loaded.
  */
-export function trackMetaEvent(event: string, params?: Record<string, unknown>): void {
+export function trackMetaEvent(
+  event: string,
+  params?: Record<string, unknown>,
+  options?: { eventID?: string },
+): void {
   if (typeof window === "undefined" || !window.fbq) return;
-  if (params) {
+  if (options?.eventID) {
+    window.fbq("track", event, params ?? {}, { eventID: options.eventID });
+  } else if (params) {
     window.fbq("track", event, params);
   } else {
     window.fbq("track", event);
   }
+}
+
+/**
+ * Advanced Matching: re-initializes both pixels with normalized customer
+ * data once it's actually known (e.g. the email Stripe confirms on the
+ * thank-you page). Meta's SDK hashes these client-side before sending —
+ * pass plain, normalized values here, never pre-hashed ones. Calling
+ * fbq('init', ...) again on the same pixel ID merges in the new matching
+ * data; it does not re-inject the base script or re-fire PageView.
+ */
+export interface AdvancedMatchingData {
+  em?: string;
+  ph?: string;
+  fn?: string;
+  ln?: string;
+  external_id?: string;
+}
+
+function normalize(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+export function setAdvancedMatching(data: AdvancedMatchingData): void {
+  if (typeof window === "undefined" || !window.fbq) return;
+
+  const matchData: Record<string, string> = {};
+  if (data.em) matchData.em = normalize(data.em);
+  if (data.ph) matchData.ph = normalize(data.ph).replace(/[^0-9]/g, "");
+  if (data.fn) matchData.fn = normalize(data.fn);
+  if (data.ln) matchData.ln = normalize(data.ln);
+  if (data.external_id) matchData.external_id = data.external_id;
+
+  if (Object.keys(matchData).length === 0) return;
+
+  window.fbq("init", META_PIXEL_ID, matchData);
+  window.fbq("init", META_PIXEL_ID_2, matchData);
 }

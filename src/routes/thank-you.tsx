@@ -1,9 +1,14 @@
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { trackMetaEvent } from "../lib/meta-pixel";
+import { trackMetaEvent, setAdvancedMatching } from "../lib/meta-pixel";
 import { PLACEHOLDER_PRICE_USD } from "../lib/pricing";
 import { BASE_PATH } from "../lib/base-path";
 import { CheckCircle2, Sparkles, Download, Play } from "lucide-react";
+
+// Guards against re-firing Purchase for a session we already fired it for
+// in this browser (e.g. a plain page refresh, or revisiting the URL) —
+// `purchaseFired` alone doesn't survive a refresh since it's React state.
+const PURCHASE_FIRED_STORAGE_KEY = "sos_purchase_fired_session_id";
 
 export const Route = createFileRoute("/thank-you")({
   head: () => ({
@@ -73,16 +78,40 @@ function ThankYouPage() {
           currency?: string;
         }) => {
           if (cancelled) return;
-          if (data.email) setResolvedEmail(data.email);
-          if (!purchaseFired && data.status === "paid") {
-            trackMetaEvent("Purchase", {
-              content_name: "Sales.OS Launch Special",
-              currency: (data.currency || "usd").toUpperCase(),
-              value:
-                typeof data.amountTotal === "number"
-                  ? data.amountTotal / 100
-                  : PLACEHOLDER_PRICE_USD,
+          if (data.email) {
+            setResolvedEmail(data.email);
+            // Advanced Matching: re-init both pixels now that we have a
+            // real, Stripe-verified email for this visitor. Only `em` and
+            // `external_id` are available here today — ph/fn/ln would need
+            // get-checkout-session.js extended to also return Stripe's
+            // customer_details.name/phone, which isn't wired yet.
+            setAdvancedMatching({
+              em: data.email,
+              external_id: search.session_id,
             });
+          }
+          if (!purchaseFired && data.status === "paid") {
+            const sessionId = search.session_id as string;
+            const alreadyFiredThisSession =
+              typeof window !== "undefined" &&
+              window.sessionStorage.getItem(PURCHASE_FIRED_STORAGE_KEY) === sessionId;
+            if (!alreadyFiredThisSession) {
+              trackMetaEvent(
+                "Purchase",
+                {
+                  content_name: "Sales.OS Launch Special",
+                  currency: (data.currency || "usd").toUpperCase(),
+                  value:
+                    typeof data.amountTotal === "number"
+                      ? data.amountTotal / 100
+                      : PLACEHOLDER_PRICE_USD,
+                },
+                { eventID: sessionId },
+              );
+              if (typeof window !== "undefined") {
+                window.sessionStorage.setItem(PURCHASE_FIRED_STORAGE_KEY, sessionId);
+              }
+            }
             setPurchaseFired(true);
           }
         },
